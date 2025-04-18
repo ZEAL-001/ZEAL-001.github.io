@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智汇创翼 - 创业者的智能助手</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* 导航栏样式 */
+        .navbar {
+            background: linear-gradient(90deg, #2c3e50, #4a90e2);
+            color: white;
+            padding: 0 2rem;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .navbar-item {
+            margin: 0 15px;
+        }
+        
+        .navbar-item a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: opacity 0.3s;
+            padding: 21px 10px;
+            display: inline-block;
+        }
+        
+        .navbar-item a:hover {
+            opacity: 0.8;
+        }
+
+        .navbar-item a.active {
+            border-bottom: 3px solid white;
+            font-weight: bold;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-name {
+            color: white;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            padding: 6px 16px;
+            border-radius: 30px;
+            background-color: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+        }
+        
+        .user-name svg {
+            margin-right: 6px;
+        }
+        
+        .user-name:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* 英雄区块 */
+        .hero-section {
+            background: linear-gradient(135deg, #1a2a3a, #2c3e50, #4a6bdf);
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+            position: relative;
+            overflow: hidden;
+            animation: gradientAnimation 15s ease infinite;
+        }
+        
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3Cpath d='M6 5V0H5v5H0v1h5v94h1V6h94V5H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            animation: floatBackgroundAnimation 30s linear infinite;
+        }
+        
+        @keyframes floatBackgroundAnimation {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 100px 100px;
+            }
+        }
+        
+        /* 添加浮动元素 */
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 7%),
+                             radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 7%),
+                             radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 6%),
+                             radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 6%);
+        }
+        
+        .hero-section h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .hero-section p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .hero-button {
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .primary-button {
+            background-color: white;
+            color: #4a90e2;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .primary-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        
+        .secondary-button {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .secondary-button:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        /* 功能区块 */
+        .features-section {
+            padding: 80px 20px;
+            text-align: center;
+            background-color: white;
+        }
+        
+        .section-title {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .section-subtitle {
+            font-size: 18px;
+            color: #7f8c8d;
+            max-width: 700px;
+            margin: 0 auto 50px;
+        }
+        
+        .features-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            padding: 30px;
+            transition: all 0.3s;
+            width: 300px;
+            text-align: center;
+            border: 1px solid #f0f0f0;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            border-color: #e0e0e0;
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f5f9ff;
+            border-radius: 50%;
+            color: #4a90e2;
+            font-size: 32px;
+        }
+        
+        .feature-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .feature-description {
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+        
+        /* 用户反馈区块 */
+        .feedback-section {
+            background-color: #f8f9fa;
+            padding: 80px 20px;
+            text-align: center;
+        }
+        
+        .testimonials {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            padding: 25px;
+            width: 350px;
+            text-align: left;
+            position: relative;
+        }
+        
+        .testimonial-content {
+            color: #555;
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            margin-right: 15px;
+            overflow: hidden;
+        }
+        
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .author-info h4 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 18px;
+        }
+        
+        .author-info p {
+            margin: 5px 0 0;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .quote-icon {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: #f0f0f0;
+            font-size: 32px;
+        }
+        
+        /* 底部 */
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 50px 20px 30px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .footer-column {
+            width: 250px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #ecf0f1;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #bdc3c7;
+            font-size: 14px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 36px;
+            }
+            
+            .hero-section p {
+                font-size: 16px;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .feature-card {
+                width: 100%;
+                max-width: 350px;
+            }
+            
+            .testimonial-card {
+                width: 100%;
+                max-width: 400px;
+            }
+            
+            .footer-column {
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">智汇创翼</a>
+        <ul class="navbar-menu">
+            <li class="navbar-item"><a href="/" class="active">首页</a></li>
+            <li class="navbar-item"><a href="/ppt-guide">PPT指导</a></li>
+            <li class="navbar-item"><a href="/virtual-coach">路演教练</a></li>
+            <li class="navbar-item"><a href="/plan-evaluation">计划书评估</a></li>
+            <li class="navbar-item"><a href="/feedback">用户反馈</a></li>
+            <li class="navbar-item"><a href="/profile">个人中心</a></li>
+        </ul>
+        <div class="user-actions">
+            <div class="user-name">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                </svg>
+                林思影
+            </div>
+        </div>
+    </nav>
+    
+    <!-- 英雄区块 -->
+    <section class="hero-section">
+        <h1>IntelliWing-智汇创翼</h1>
+        <p>智能创业服务解决方案</p>
+        <p>运用AI技术为创业者提供智能化的商业计划书评估、PPT指导和路演教练服务，助力创业项目成功</p>
+        
+        <div class="hero-buttons">
+            <a href="/plan-evaluation" class="hero-button primary-button">立即体验</a>
+            <a href="#features" class="hero-button secondary-button">了解更多</a>
+        </div>
+    </section>
+    
+    <!-- 功能区块 -->
+    <section id="features" class="features-section">
+        <h2 class="section-title">核心功能</h2>
+        <p class="section-subtitle">智汇创翼为创业者提供全方位的智能服务，助力项目成功</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+                        <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
+                    </svg>
+                </div>
+                <h3 class="feature-title">商业计划书评估</h3>
+                <p class="feature-description">上传您的商业计划书，获取专业评估报告。AI智能分析商业模式、市场前景和风险点，提供针对性改进建议。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2zm5 4a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                    </svg>
+                </div>
+                <h3 class="feature-title">虚拟路演教练</h3>
+                <p class="feature-description">练习您的路演演讲，获取实时反馈和建议。模拟投资人视角，提供专业指导，让您的路演更加出色。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.825a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3zm-8.322.12C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139z"/>
+                    </svg>
+                </div>
+                <h3 class="feature-title">PPT指导</h3>
+                <p class="feature-description">上传您的PPT或提出需求，获取专业设计与优化建议。帮助您打造吸引投资人的精美路演PPT。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                    </svg>
+                </div>
+                <h3 class="feature-title">用户反馈</h3>
+                <p class="feature-description">您的建议是我们进步的动力。通过用户反馈功能，分享您的使用体验和改进建议，帮助我们打造更优质的服务。</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 用户反馈区块 -->
+    <section class="feedback-section">
+        <h2 class="section-title">用户反馈</h2>
+        <p class="section-subtitle">来自我们用户的真实评价</p>
+        
+        <div class="testimonials">
+            <div class="testimonial-card">
+                <div class="quote-icon">❝</div>
+                <p class="testimonial-content">智汇创翼的商业计划书评估非常专业，帮我发现了很多原本没注意到的问题。推荐给所有创业者使用！</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">
+                        <img src="https://vispenn.com.au/wp-content/uploads/2020/09/Headshot-Melbourne-Business-Corporate-Portraits_VISPENN_%E5%A2%A8%E5%B0%94%E6%9C%AC-%E5%95%86%E5%8A%A1-%E8%82%96%E5%83%8F%E5%B7%A5%E4%BD%9C%E7%85%A7-%E5%9B%A2%E9%98%9F-%E5%BD%A2%E8%B1%A1%E7%85%A7-LinkedIn-%E5%A4%B4%E5%83%8F_5D1_3368.jpg" alt="李明" width="50" height="50" style="border-radius: 50%;">
+                    </div>
+                    <div class="author-info">
+                        <h4>李明</h4>
+                        <p>科技创业者</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="quote-icon">❝</div>
+                <p class="testimonial-content">虚拟路演教练功能帮我克服了紧张情绪，掌握了投资人最关心的问题，成功获得了天使轮融资！</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">
+                        <img src="https://n.sinaimg.cn/tech/crawl/80/w550h330/20210415/f88f-knvsnuf3793531.jpg" alt="王晓华" width="50" height="50" style="border-radius: 50%;">
+                    </div>
+                    <div class="author-info">
+                        <h4>王晓华</h4>
+                        <p>电商平台创始人</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="quote-icon">❝</div>
+                <p class="testimonial-content">PPT指导功能让我的路演演示更加专业，内容逻辑更清晰，视觉效果也大大提升。强烈推荐！</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">
+                        <img src="https://img.shetu66.com/2022/08/31/1661925896944341.jpg" alt="张伟" width="50" height="50" style="border-radius: 50%;">
+                    </div>
+                    <div class="author-info">
+                        <h4>张伟</h4>
+                        <p>SaaS服务提供商</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 底部 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>智汇创翼</h3>
+                <ul>
+                    <li><a href="/about">关于我们</a></li>
+                    <li><a href="/team">团队介绍</a></li>
+                    <li><a href="/contact">联系我们</a></li>
+                    <li><a href="/careers">加入我们</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>产品服务</h3>
+                <ul>
+                    <li><a href="/plan-evaluation">商业计划书评估</a></li>
+                    <li><a href="/virtual-coach">虚拟路演教练</a></li>
+                    <li><a href="/ppt-guide">PPT指导</a></li>
+                    <li><a href="/pricing">价格方案</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>用户支持</h3>
+                <ul>
+                    <li><a href="/help">帮助中心</a></li>
+                    <li><a href="/faq">常见问题</a></li>
+                    <li><a href="/feedback">用户反馈</a></li>
+                    <li><a href="/terms">服务条款</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>联系方式</h3>
+                <ul>
+                    <li>邮箱: contact@zhihuichuangyi.com</li>
+                    <li>电话: 400-123-4567</li>
+                    <li>地址: 北京市海淀区中关村创业大厦</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2024 智汇创翼 版权所有</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
