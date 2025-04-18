@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智汇创翼 - 商业计划书评估助手</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            background: linear-gradient(90deg, #2c3e50, #4a90e2);
+            color: white;
+            padding: 0 2rem;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .navbar-item {
+            margin: 0 15px;
+        }
+        
+        .navbar-item a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: opacity 0.3s;
+            padding: 21px 10px;
+            display: inline-block;
+        }
+        
+        .navbar-item a:hover {
+            opacity: 0.8;
+        }
+
+        .navbar-item a.active {
+            border-bottom: 3px solid white;
+            font-weight: bold;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .login-btn {
+            background-color: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: all 0.3s;
+        }
+        
+        .login-btn:hover {
+            background-color: white;
+            color: #4a90e2;
+        }
+
+        /* 主内容 */
+        .main-content {
+            flex: 1;
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+        }
+        
+        .app-container {
+            width: 100%;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .app-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .app-header h1 {
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+        
+        .app-header p {
+            color: #ecf0f1;
+            font-size: 14px;
+        }
+        
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-height: 70vh;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+        }
+        
+        .user-message {
+            justify-content: flex-end;
+        }
+        
+        .bot-message {
+            justify-content: flex-start;
+        }
+        
+        .message-content {
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 80%;
+            word-wrap: break-word;
+            line-height: 1.5;
+            white-space: pre-line;
+        }
+        
+        .user-message .message-content {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .bot-message .message-content {
+            background-color: #e5e5ea;
+            color: #333;
+        }
+        
+        .evaluation-message .message-content {
+            background-color: #e8f4fc;
+            color: #333;
+            border: 1px solid #bce0fd;
+            max-width: 90%;
+        }
+        
+        .chat-input-container {
+            padding: 15px;
+            background-color: white;
+            border-top: 1px solid #eee;
+        }
+        
+        .chat-input-wrapper {
+            display: flex;
+            position: relative;
+            align-items: center;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 12px 15px;
+            padding-right: 100px; /* 增加右侧内边距，给上传按钮留出更多空间 */
+            border: 1px solid #ddd;
+            border-radius: 24px;
+            font-size: 14px;
+            resize: none;
+            overflow: hidden;
+            height: 48px;
+            max-height: 150px;
+            transition: all 0.3s;
+        }
+        
+        .chat-input:focus {
+            outline: none;
+            border-color: #4a90e2;
+        }
+        
+        .upload-btn {
+            position: absolute;
+            right: 120px; /* 增加距离右边的距离，与发送按钮保持更大间距 */
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #777;
+            font-size: 20px;
+            padding: 8px; /* 增加内边距，让按钮更容易点击 */
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+        
+        .upload-btn:hover {
+            color: #4a90e2;
+            background-color: #f0f8ff;
+        }
+        
+        .send-btn {
+            padding: 10px 20px;
+            margin-left: 15px; /* 增加与输入框的间距 */
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            height: 45px; /* 固定高度 */
+            min-width: 90px; /* 设置最小宽度 */
+            font-size: 15px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .file-upload-input {
+            display: none;
+        }
+        
+        .file-indicator {
+            margin-top: 10px;
+            display: none;
+            align-items: center;
+            padding: 6px 12px;
+            background-color: #f0f8ff;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #3498db;
+        }
+        
+        .file-indicator span {
+            margin-left: 10px;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .remove-file-button {
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .suggestion-chip {
+            padding: 8px 15px;
+            background-color: #f0f8ff;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #3498db;
+            border: 1px solid #bce0fd;
+            transition: all 0.2s;
+        }
+        
+        .suggestion-chip:hover {
+            background-color: #e0f0ff;
+        }
+        
+        .loading-dots {
+            display: inline-block;
+        }
+        
+        .loading-dots span {
+            animation: loading 1.4s infinite ease-in-out both;
+            background-color: #777;
+            border-radius: 50%;
+            display: inline-block;
+            height: 6px;
+            margin: 0 2px;
+            width: 6px;
+        }
+        
+        .loading-dots span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+        
+        .loading-dots span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+        
+        @keyframes loading {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1.0); }
+        }
+
+        /* 底部页脚 */
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 10px;
+            }
+            
+            .app-container {
+                border-radius: 0;
+            }
+            
+            .navbar {
+                padding: 0 1rem;
+            }
+            
+            .navbar-item {
+                margin: 0 8px;
+            }
+            
+            .navbar-item a {
+                font-size: 14px;
+                padding: 21px 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">智汇创翼</a>
+        <ul class="navbar-menu">
+            <li class="navbar-item">
+                <a href="/" class="nav-link">首页</a>
+            </li>
+            <li class="navbar-item">
+                <a href="/plan-evaluation" class="nav-link active">计划书评估</a>
+            </li>
+            <li class="navbar-item">
+                <a href="/ppt-guide" class="nav-link">PPT指导</a>
+            </li>
+            <li class="navbar-item">
+                <a href="/virtual-coach" class="nav-link">路演教练</a>
+            </li>
+            <li class="navbar-item">
+                <a href="/feedback" class="nav-link">用户反馈</a>
+            </li>
+        </ul>
+        <div class="user-actions">
+            <a href="/profile" class="user-name">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                </svg>
+                个人中心
+            </a>
+        </div>
+    </nav>
+
+    <!-- 主内容 -->
+    <div class="main-content">
+        <div class="app-container">
+            <div class="app-header">
+                <h1>商业计划书评估助手</h1>
+                <p>上传您的计划书，获取专业评估报告</p>
+            </div>
+            
+            <div class="chat-container">
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message bot-message">
+                        <div class="message-content">
+                            您好！我是智汇创翼商业计划书评估助手。请上传您的商业计划书文档，并输入您的评估需求，我将为您提供专业评估。
+                        </div>
+                    </div>
+                    
+                    <div class="suggestions">
+                        <div class="suggestion-chip" onclick="insertSuggestion('请评估我的商业计划书的市场可行性')">评估市场可行性</div>
+                        <div class="suggestion-chip" onclick="insertSuggestion('分析这份计划书的创新性如何')">分析创新性</div>
+                        <div class="suggestion-chip" onclick="insertSuggestion('团队能力分析')">团队能力分析</div>
+                        <div class="suggestion-chip" onclick="insertSuggestion('请问如何使用这个系统')">如何使用</div>
+                    </div>
+                </div>
+                
+                <div class="chat-input-container">
+                    <div class="file-indicator" id="file-indicator">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
+                            <path d="M4.5 12.5A.5.5 0 0 1 5 12h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 5 10h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm1.639-3.708 1.33.886 1.854-1.855a.25.25 0 0 1 .289-.047l1.888.974V7.5a.5.5 0 0 1-.5.5H5a.5.5 0 0 1-.5-.5V7s1.54-1.274 1.639-1.208zM6.25 5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5z"/>
+                        </svg>
+                        <span id="file-name"></span>
+                        <button class="remove-file-button" id="remove-file-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="chat-input-wrapper">
+                        <textarea class="chat-input" id="user-input" placeholder="请输入评估需求..." rows="1"></textarea>
+                        <label class="upload-btn" for="file-upload">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z"/>
+                            </svg>
+                        </label>
+                        <input type="file" id="file-upload" class="file-upload-input" accept=".txt,.pdf,.doc,.docx">
+                        <button class="send-btn" id="send-button">发送</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <p>© 2024 智汇创翼 版权所有</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM元素
+            const chatMessages = document.getElementById('chat-messages');
+            const userInput = document.getElementById('user-input');
+            const sendButton = document.getElementById('send-button');
+            const fileUpload = document.getElementById('file-upload');
+            const fileIndicator = document.getElementById('file-indicator');
+            const fileName = document.getElementById('file-name');
+            const removeFileButton = document.getElementById('remove-file-button');
+            
+            // 修改引用的CSS类名
+            const uploadBtn = document.querySelector('.upload-btn');
+            
+            // 文件数据
+            let currentFile = null;
+            
+            // 自动调整文本框高度
+            userInput.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+                
+                // 限制最大高度
+                if (this.scrollHeight > 120) {
+                    this.style.height = '120px';
+                }
+            });
+            
+            // 文件上传处理
+            fileUpload.addEventListener('change', function() {
+                if (fileUpload.files.length > 0) {
+                    const file = fileUpload.files[0];
+                    currentFile = file;
+                    fileName.textContent = file.name;
+                    fileIndicator.style.display = 'flex';
+                    
+                    // 自动加入评估提示
+                    if (!userInput.value.includes('评估') && !userInput.value.includes('分析')) {
+                        userInput.value = userInput.value ? 
+                            userInput.value + " 请评估这份商业计划书" : 
+                            "请评估这份商业计划书";
+                        
+                        // 触发input事件以调整高度
+                        userInput.dispatchEvent(new Event('input'));
+                    }
+                    
+                    // 聚焦到输入框
+                    userInput.focus();
+                }
+            });
+            
+            // 移除文件按钮
+            removeFileButton.addEventListener('click', function() {
+                currentFile = null;
+                fileUpload.value = '';
+                fileIndicator.style.display = 'none';
+            });
+            
+            // 发送消息函数
+            async function sendMessage() {
+                const message = userInput.value.trim();
+                if (message === '' && !currentFile) return;
+                
+                // 添加用户消息到聊天框
+                addMessage(message, 'user');
+                
+                // 显示加载状态
+                const loadingMessage = addLoadingMessage();
+                
+                // 准备发送数据
+                const requestData = { 
+                    message: message,
+                    page_type: 'plan'  // 指定当前页面类型
+                };
+                
+                // 如果有文件，转换为base64添加到请求中
+                if (currentFile) {
+                    try {
+                        const base64 = await fileToBase64(currentFile);
+                        requestData.file_data = {
+                            name: currentFile.name,
+                            content: base64
+                        };
+                    } catch (e) {
+                        removeLoadingMessage(loadingMessage);
+                        addMessage('文件处理失败，请重试。', 'bot');
+                        return;
+                    }
+                }
+                
+                // 清空输入框和文件
+                userInput.value = '';
+                userInput.style.height = 'auto';
+                if (currentFile) {
+                    currentFile = null;
+                    fileUpload.value = '';
+                    fileIndicator.style.display = 'none';
+                }
+                
+                // 发送消息到服务器
+                fetch('/send_message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // 移除加载消息
+                    removeLoadingMessage(loadingMessage);
+                    
+                    // 添加回复消息
+                    if (data.is_evaluation) {
+                        addMessage(data.reply, 'evaluation');
+                    } else {
+                        addMessage(data.reply, 'bot');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    removeLoadingMessage(loadingMessage);
+                    addMessage('抱歉，发生了错误，请稍后再试。', 'bot');
+                });
+            }
+            
+            // 添加消息到聊天框
+            function addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}-message`;
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content';
+                contentDiv.textContent = text;
+                
+                messageDiv.appendChild(contentDiv);
+                chatMessages.appendChild(messageDiv);
+                
+                // 滚动到底部
+                scrollToBottom();
+                
+                return messageDiv;
+            }
+            
+            // 添加加载中消息
+            function addLoadingMessage() {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message bot-message loading-message';
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content';
+                
+                const loadingDots = document.createElement('div');
+                loadingDots.className = 'loading-dots';
+                loadingDots.innerHTML = '<span></span><span></span><span></span>';
+                
+                contentDiv.appendChild(loadingDots);
+                messageDiv.appendChild(contentDiv);
+                chatMessages.appendChild(messageDiv);
+                
+                // 滚动到底部
+                scrollToBottom();
+                
+                return messageDiv;
+            }
+            
+            // 移除加载中消息
+            function removeLoadingMessage(messageDiv) {
+                if (messageDiv && messageDiv.parentNode) {
+                    messageDiv.parentNode.removeChild(messageDiv);
+                }
+            }
+            
+            // 滚动到底部
+            function scrollToBottom() {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // 文件转base64
+            function fileToBase64(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => {
+                        const base64 = reader.result.split(',')[1];
+                        resolve(base64);
+                    };
+                    reader.onerror = error => reject(error);
+                });
+            }
+            
+            // 点击发送按钮
+            sendButton.addEventListener('click', sendMessage);
+            
+            // 按Enter键发送（Shift+Enter换行）
+            userInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+            
+            // 让聊天窗口最初就滚动到底部
+            scrollToBottom();
+        });
+        
+        // 插入建议消息
+        function insertSuggestion(text) {
+            const userInput = document.getElementById('user-input');
+            userInput.value = text;
+            userInput.focus();
+            // 触发input事件以调整高度
+            userInput.dispatchEvent(new Event('input'));
+        }
+    </script>
+</body>
+</html> 

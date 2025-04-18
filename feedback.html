@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智汇创翼 - 用户反馈</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            background: linear-gradient(90deg, #2c3e50, #4a90e2);
+            color: white;
+            padding: 0 2rem;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .navbar-item {
+            margin: 0 15px;
+        }
+        
+        .navbar-item a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: opacity 0.3s;
+            padding: 21px 10px;
+            display: inline-block;
+        }
+        
+        .navbar-item a:hover {
+            opacity: 0.8;
+        }
+
+        .navbar-item a.active {
+            border-bottom: 3px solid white;
+            font-weight: bold;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-name {
+            color: white;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            padding: 6px 16px;
+            border-radius: 30px;
+            background-color: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+        }
+        
+        .user-name svg {
+            margin-right: 6px;
+        }
+        
+        .user-name:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* 主内容 */
+        .main-content {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            width: 100%;
+        }
+        
+        .page-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .page-title {
+            font-size: 32px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .page-subtitle {
+            font-size: 18px;
+            color: #7f8c8d;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* 反馈表单 */
+        .feedback-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            padding: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .feedback-form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+        }
+        
+        .form-textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            min-height: 150px;
+            resize: vertical;
+            transition: all 0.3s;
+        }
+        
+        .form-textarea:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 12px;
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+        }
+        
+        .form-checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .form-checkbox-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-checkbox {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            accent-color: #4a90e2;
+        }
+        
+        .rating-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .rating-stars {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .rating-star {
+            font-size: 24px;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .rating-star:hover,
+        .rating-star.active {
+            color: #ffb400;
+        }
+        
+        .rating-text {
+            margin-left: 10px;
+            font-size: 16px;
+            color: #7f8c8d;
+        }
+        
+        .submit-btn {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            align-self: flex-start;
+        }
+        
+        .submit-btn:hover {
+            background-color: #357abd;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 10px rgba(74, 144, 226, 0.3);
+        }
+        
+        /* 底部 */
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 50px 20px 30px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .footer-column {
+            width: 250px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #ecf0f1;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #bdc3c7;
+            font-size: 14px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 1rem;
+            }
+            
+            .navbar-item {
+                margin: 0 8px;
+            }
+            
+            .form-checkbox-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .rating-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .submit-btn {
+                width: 100%;
+            }
+            
+            .footer-column {
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">智汇创翼</a>
+        <ul class="navbar-menu">
+            <li class="navbar-item">
+                <a href="/" class="nav-link">首页</a>
+            </li>
+            <li class="navbar-item">
+                <a href="/plan-evaluation" class="nav-link">计划书评估</a>
+            </li>
+            <li class="navbar-item">
+                <a href="/ppt-guide" class="nav-link">PPT指导</a>
+            </li>
+            <li class="navbar-item">
+                <a href="/virtual-coach" class="nav-link">路演教练</a>
+            </li>
+            <li class="navbar-item">
+                <a href="/feedback" class="nav-link active">用户反馈</a>
+            </li>
+        </ul>
+        <div class="user-actions">
+            <a href="/profile" class="user-name">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                </svg>
+                个人中心
+            </a>
+        </div>
+    </nav>
+    
+    <!-- 主内容 -->
+    <div class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">用户反馈</h1>
+            <p class="page-subtitle">您的建议是我们进步的动力。请分享您的使用体验和改进建议，帮助我们打造更优质的服务。</p>
+        </div>
+        
+        <div class="feedback-container">
+            <form class="feedback-form" id="feedback-form">
+                <div class="form-group">
+                    <label class="form-label" for="feedback-type">反馈类型</label>
+                    <select class="form-select" id="feedback-type" required>
+                        <option value="" disabled selected>请选择反馈类型</option>
+                        <option value="suggestion">功能建议</option>
+                        <option value="bug">问题反馈</option>
+                        <option value="experience">使用体验</option>
+                        <option value="other">其他</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">使用的功能</label>
+                    <div class="form-checkbox-group">
+                        <div class="form-checkbox-item">
+                            <input type="checkbox" class="form-checkbox" id="feature-plan" name="features">
+                            <label for="feature-plan">商业计划书评估</label>
+                        </div>
+                        <div class="form-checkbox-item">
+                            <input type="checkbox" class="form-checkbox" id="feature-ppt" name="features">
+                            <label for="feature-ppt">PPT指导</label>
+                        </div>
+                        <div class="form-checkbox-item">
+                            <input type="checkbox" class="form-checkbox" id="feature-coach" name="features">
+                            <label for="feature-coach">虚拟路演教练</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">产品满意度</label>
+                    <div class="rating-container">
+                        <div class="rating-stars" id="rating-stars">
+                            <span class="rating-star" data-value="1">★</span>
+                            <span class="rating-star" data-value="2">★</span>
+                            <span class="rating-star" data-value="3">★</span>
+                            <span class="rating-star" data-value="4">★</span>
+                            <span class="rating-star" data-value="5">★</span>
+                        </div>
+                        <span class="rating-text" id="rating-text">请选择评分</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="feedback-content">反馈内容</label>
+                    <textarea class="form-textarea" id="feedback-content" placeholder="请详细描述您的反馈或建议..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="contact-email">联系邮箱（选填）</label>
+                    <input type="email" class="form-input" id="contact-email" placeholder="如需回复，请留下您的联系方式">
+                </div>
+                
+                <button type="submit" class="submit-btn">提交反馈</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- 底部 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>智汇创翼</h3>
+                <ul>
+                    <li><a href="/about">关于我们</a></li>
+                    <li><a href="/team">团队介绍</a></li>
+                    <li><a href="/contact">联系我们</a></li>
+                    <li><a href="/careers">加入我们</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>产品服务</h3>
+                <ul>
+                    <li><a href="/plan-evaluation">商业计划书评估</a></li>
+                    <li><a href="/virtual-coach">虚拟路演教练</a></li>
+                    <li><a href="/ppt-guide">PPT指导</a></li>
+                    <li><a href="/pricing">价格方案</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>用户支持</h3>
+                <ul>
+                    <li><a href="/help">帮助中心</a></li>
+                    <li><a href="/faq">常见问题</a></li>
+                    <li><a href="/feedback">用户反馈</a></li>
+                    <li><a href="/terms">服务条款</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>联系方式</h3>
+                <ul>
+                    <li>邮箱: contact@zhihuichuangyi.com</li>
+                    <li>电话: 400-123-4567</li>
+                    <li>地址: 北京市海淀区中关村创业大厦</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2024 智汇创翼 版权所有</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 星级评分功能
+            const ratingStars = document.querySelectorAll('.rating-star');
+            const ratingText = document.getElementById('rating-text');
+            const ratingLabels = ['很不满意', '不满意', '一般', '满意', '非常满意'];
+            
+            // 点击星星评分
+            ratingStars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const value = parseInt(this.dataset.value);
+                    
+                    // 清除所有星星的活跃状态
+                    ratingStars.forEach(s => s.classList.remove('active'));
+                    
+                    // 激活点击的星星及之前的星星
+                    for (let i = 0; i < value; i++) {
+                        ratingStars[i].classList.add('active');
+                    }
+                    
+                    // 更新评分文本
+                    ratingText.textContent = ratingLabels[value - 1];
+                });
+            });
+            
+            // 表单提交处理
+            const feedbackForm = document.getElementById('feedback-form');
+            
+            feedbackForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // 获取表单数据
+                const feedbackType = document.getElementById('feedback-type').value;
+                const featuresChecked = document.querySelectorAll('input[name="features"]:checked');
+                const features = Array.from(featuresChecked).map(cb => cb.id.replace('feature-', ''));
+                const rating = document.querySelectorAll('.rating-star.active').length;
+                const content = document.getElementById('feedback-content').value;
+                const email = document.getElementById('contact-email').value;
+                
+                // 构建提交数据
+                const feedbackData = {
+                    type: feedbackType,
+                    features: features,
+                    rating: rating,
+                    content: content,
+                    email: email
+                };
+                
+                // 这里可以添加实际的提交逻辑，比如发送到服务器
+                console.log("提交的反馈数据:", feedbackData);
+                
+                // 显示提交成功消息
+                alert("感谢您的反馈！我们会认真考虑您的意见和建议。");
+                
+                // 重置表单
+                feedbackForm.reset();
+                ratingStars.forEach(s => s.classList.remove('active'));
+                ratingText.textContent = '请选择评分';
+            });
+        });
+    </script>
+</body>
+</html> 
